@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+</head>
+<body>
+    <label for="txtNum1">Number 1: </label>
+    <input type="text" id="txtNum1" /> <br />
+
+    <label for="txtNum2">Number 2: </label>
+    <input type="text" id="txtNum2" /> <br />
+
+    <label for="txtResult">Result: </label>
+    <input type="text" id="txtResult" /> <br />
+
+    <a id="lnkAdd" href = "#">Add</a> &nbsp;
+    <a id="lnkSubtract" href = "#">Subtract</a> &nbsp;
+    <a id="lnkMultiply" href = "#">Multiply</a> &nbsp;
+    <a id="lnkDivide" href = "#">Divide</a> &nbsp;
+
+    <script>
+        var $txtNum1 = $('#txtNum1'),
+            $txtNum2 = $('#txtNum2'),
+            $txtResult = $('#txtResult'),
+            $lnkAdd = $('#lnkAdd'),
+            $lnkSubtract = $('#lnkSubtract'),
+            $lnkMultiply = $('#lnkMultiply'),
+            $lnkDivide = $('#lnkDivide');
+        
+        $lnkAdd.click(function (e) {
+            callService('add');
+            e.preventDefault();
+        });
+        $lnkSubtract.click(function (e) {
+            callService('subtract');
+            e.preventDefault();
+        });
+        $lnkMultiply.click(function (e) {
+            callService('multiply');
+            e.preventDefault();
+        });
+        $lnkDivide.click(function (e) {
+            callService('divide');
+            e.preventDefault();
+        });
+
+        function callService(operation) {
+            var d = {
+                'n1': parseFloat($txtNum1.val()),
+                'n2': parseFloat($txtNum2.val())
+                },
+                op = '';
+
+            switch (operation) {
+                case 'add':
+                    op = 'Add';
+                    break;
+                case 'subtract':
+                    op = 'Subtract';
+                    break;
+                case 'multiply':
+                    op = 'Multiply';
+                    break;
+                case 'divide':
+                    op = 'Divide';
+                    break;
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                url: 'http://localhost/IISHostedCalc/Service.svc/' + op,
+                data: JSON.stringify(d),
+                dataType: 'json',
+                success: function (result) {
+                    $txtResult.val(result);
+                },
+                error: function () { debugger; }
+            });
+        }
+    </script>
+</body>
+</html>

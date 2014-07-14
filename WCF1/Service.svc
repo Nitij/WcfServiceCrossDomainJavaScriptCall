@@ -1,0 +1,5 @@
+﻿<%@ ServiceHost 
+    Language="C#" 
+    Debug="true" 
+    Service="Microsoft.ServiceModel.Samples.CalculatorService" 
+    CodeBehind="~/App_Code/Service.cs"  %>
